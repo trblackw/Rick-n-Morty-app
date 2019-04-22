@@ -1,33 +1,19 @@
-import React, { useContext, useEffect } from 'react';
-import { Store, FETCH_DATA } from './Store';
-const App: React.FunctionComponent = (): JSX.Element => {
-	const { state: { episodes, favorites }, dispatch } = useContext(Store);
+import React, { Fragment } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Episodes from './components/Episodes';
+import Nav from './components/Nav';
+import Favorites from './components/Favorites';
 
-	useEffect(() => {
-		fetchEpisodes();
-	}, []);
-
-	useEffect(
-		() => {
-			console.log(episodes);
-		},
-		[episodes]
-	);
-
-	const fetchEpisodes = async (): Promise<void> => {
-		try {
-			const res = await fetch('https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty&embed=episodes');
-			const { _embedded: { episodes } } = await res.json();
-			return dispatch({ type: FETCH_DATA, payload: episodes });
-		} catch (error) {
-			console.error(error);
-		}
-	};
-	return (
-		<div className="p-3 m-auto bg-grey">
-			<header className="App-header">Rick & Morty</header>
-		</div>
-	);
-};
+const App = () => (
+	<Fragment>
+		<Nav />
+		<Router>
+			<Switch>
+				<Route exact path="/" component={Episodes} />
+				<Route exact path="/favorites" component={Favorites} />
+			</Switch>
+		</Router>
+	</Fragment>
+);
 
 export default App;
