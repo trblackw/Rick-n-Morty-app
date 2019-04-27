@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 import Logo from '../assets/rickmortylogo.png';
 import { Store } from '../Store';
 import { Link } from 'react-router-dom';
+import { CLEAR_FAVORITES } from '../Store';
 
 const Nav = () => {
-	const { state: { favorites } } = useContext(Store);
+	const { state: { favorites }, dispatch } = useContext(Store);
 	return (
 		<nav className='flex items-center justify-between flex-wrap mb-0 bg-purple-dark sticky p-6'>
 			<div className='flex items-center flex-no-shrink text-white mr-6 sticky'>
@@ -22,10 +23,13 @@ const Nav = () => {
 				<div>
 					<Link
 						to='/favorites'
-						className='inline-block text-lg px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-white hover:bg-green mt-4 lg:mt-0'>
+						className='inline-block text-lg px-4 mx-2 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-white hover:bg-green mt-4 lg:mt-0'>
 						Favorites: {favorites.length}
 					</Link>
 				</div>
+            <div>
+               <button className='inline-block text-lg px-4 py-2 leading-none border rounded text-white border-white mx-2 hover:border-transparent hover:text-white hover:bg-green mt-4 lg:mt-0' onClick={() => dispatch({ type: CLEAR_FAVORITES })}>Clear Favorites</button>
+            </div>
 			</div>
 		</nav>
 	);
