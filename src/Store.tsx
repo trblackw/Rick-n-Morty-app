@@ -10,10 +10,7 @@ const reducer = (state: IState, { type, payload }: IAction): IState => {
 		case FETCH_DATA:
 			return { ...state, episodes: payload };
 		case ADD_TO_FAVORITES:
-			const uniqueFavorites: IEpisode[] = [
-				...state.favorites,
-				payload
-			].reduce((unique: IEpisode[], episode: IEpisode): IEpisode[] => {
+			const uniqueFavorites: IEpisode[] = [ ...state.favorites, payload ].reduce((unique: IEpisode[], episode: IEpisode): IEpisode[] => {
 				let episodeIds: number[] = unique.map(({ id }: IEpisode): number => id);
 				!episodeIds.includes(episode.id) && unique.push(episode);
 				return unique;
