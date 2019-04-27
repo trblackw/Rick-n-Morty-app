@@ -1,0 +1,14 @@
+{
+    "rickmorty": {
+        "awscloudformation": {
+            "AuthRoleName": "rick-n-morty-20190427120457-authRole",
+            "UnauthRoleArn": "arn:aws:iam::378836099946:role/rick-n-morty-20190427120457-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::378836099946:role/rick-n-morty-20190427120457-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "rick-n-morty-20190427120457-deployment",
+            "UnauthRoleName": "rick-n-morty-20190427120457-unauthRole",
+            "StackName": "rick-n-morty-20190427120457",
+            "StackId": "arn:aws:cloudformation:us-east-1:378836099946:stack/rick-n-morty-20190427120457/346d4f50-6906-11e9-b85f-0a9ef6cbb06a"
+        }
+    }
+}
