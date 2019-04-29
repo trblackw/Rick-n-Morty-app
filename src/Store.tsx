@@ -1,13 +1,16 @@
-import React, { createContext, useReducer } from 'react';
-import { IState, IAction, IEpisode } from './interfaces';
-export const FETCH_DATA: string = 'FETCH_DATA';
+import React, { createContext, useReducer, useEffect, useState } from 'react';
+import { IEpisodeState, IAction, IEpisode, ReducerFunc, ICharacterState, IAppState } from './interfaces';
+
+//EPISODES
+export const EPISODES_URL: string = 'https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty&embed=episodes';
+export const FETCH_EPISODES: string = 'FETCH_EPISODES';
 export const ADD_TO_FAVORITES: string = 'ADD_TO_FAVORITES';
 export const REMOVE_FROM_FAVORITES: string = 'REMOVE_FROM_FAVORITES';
 export const CLEAR_FAVORITES: string = 'CLEAR_FAVORITES';
 
-const reducer = (state: IState, { type, payload }: IAction): IState => {
+const episodeReducer: ReducerFunc = (state: IEpisodeState, { type, payload }: IAction): IEpisodeState => {
    switch (type) {
-      case FETCH_DATA:
+      case FETCH_EPISODES:
          return { ...state, episodes: payload };
       case ADD_TO_FAVORITES:
          const uniqueFavorites: IEpisode[] = [...state.favorites, payload].reduce((unique: IEpisode[], episode: IEpisode): IEpisode[] => {
@@ -30,13 +33,48 @@ const reducer = (state: IState, { type, payload }: IAction): IState => {
    }
 };
 
-const initialState: IState = {
+//CHARACTERS
+export const CHARACTERS_URL: string = 'https://rickandmortyapi.com/api/character/';
+export const FETCH_CHARACTERS: string = 'FETCH_CHARACTERS';
+
+const characterReducer: ReducerFunc = (state: ICharacterState, { type, payload }: IAction): ICharacterState => {
+   switch (type) {
+      case FETCH_CHARACTERS:
+         return { ...state, characters: payload };
+      default:
+         return state;
+   }
+};
+
+const initialEpisodeState: IEpisodeState = {
    episodes: [],
    favorites: localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites') || '') : []
 };
-export const Store = createContext<IState | any>(initialState);
+
+const initialCharacterState: ICharacterState = {
+   characters: []
+};
+export const Store = createContext<ICharacterState | IEpisodeState | any>({ ...initialEpisodeState, ...initialCharacterState });
 
 export const StoreProvider = ({ children }: any): JSX.Element => {
-   const [state, dispatch] = useReducer(reducer, initialState);
-   return <Store.Provider value={{ state, dispatch }}>{children}</Store.Provider>;
+   const [episodes, updateEpisodes] = useReducer(episodeReducer, initialEpisodeState);
+   const [characters, updateCharacters] = useReducer(characterReducer, initialCharacterState);
+   //todo: address 'any' type
+   const [appState, setAppState] = useState<IAppState | any>({
+      episodeState: { episodes, updateEpisodes },
+      characterState: { characters, updateCharacters }
+   });
+   const generateAppState = () =>
+      setAppState({
+         episodeState: { episodes, updateEpisodes },
+         characterState: { characters, updateCharacters }
+      });
+   useEffect(
+      () => {
+         generateAppState();
+      },
+      [episodes, characters]
+   );
+
+   return <Store.Provider value={{ state: appState }}>{children}</Store.Provider>;
 };
