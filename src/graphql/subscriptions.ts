@@ -160,3 +160,318 @@ export const onDeleteComment = `subscription OnDeleteComment {
   }
 }
 `;
+export const onCreateCharacter = `subscription OnCreateCharacter {
+  onCreateCharacter {
+    id
+    name
+    status
+    species
+    type
+    gender
+    origin {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    location {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    image
+    episode {
+      id
+      name
+      air_date
+      episode
+      characters {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const onUpdateCharacter = `subscription OnUpdateCharacter {
+  onUpdateCharacter {
+    id
+    name
+    status
+    species
+    type
+    gender
+    origin {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    location {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    image
+    episode {
+      id
+      name
+      air_date
+      episode
+      characters {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const onDeleteCharacter = `subscription OnDeleteCharacter {
+  onDeleteCharacter {
+    id
+    name
+    status
+    species
+    type
+    gender
+    origin {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    location {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    image
+    episode {
+      id
+      name
+      air_date
+      episode
+      characters {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const onCreateEpisode = `subscription OnCreateEpisode {
+  onCreateEpisode {
+    id
+    name
+    air_date
+    episode
+    characters {
+      id
+      name
+      status
+      species
+      type
+      gender
+      origin {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      location {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      image
+      episode {
+        id
+        name
+        air_date
+        episode
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const onUpdateEpisode = `subscription OnUpdateEpisode {
+  onUpdateEpisode {
+    id
+    name
+    air_date
+    episode
+    characters {
+      id
+      name
+      status
+      species
+      type
+      gender
+      origin {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      location {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      image
+      episode {
+        id
+        name
+        air_date
+        episode
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const onDeleteEpisode = `subscription OnDeleteEpisode {
+  onDeleteEpisode {
+    id
+    name
+    air_date
+    episode
+    characters {
+      id
+      name
+      status
+      species
+      type
+      gender
+      origin {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      location {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      image
+      episode {
+        id
+        name
+        air_date
+        episode
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;

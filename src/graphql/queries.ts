@@ -1,110 +1,171 @@
-// tslint:disable
-// this is an auto generated file. This will be overwritten
-
-export const getBlog = `query GetBlog($id: ID!) {
-  getBlog(id: $id) {
+export const getCharacter = `query GetCharacter($id: ID!) {
+  getCharacter(id: $id) {
     id
     name
-    posts {
-      items {
+    status
+    species
+    type
+    gender
+    origin {
+      id
+      name
+      type
+      dimension
+      residents {
         id
-        title
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
       }
-      nextToken
+      created
     }
+    location {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    image
+    episode {
+      id
+      name
+      air_date
+      episode
+      characters {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    created
   }
 }
 `;
-export const listBlogs = `query ListBlogs(
-  $filter: ModelBlogFilterInput
+export const listCharacters = `query ListCharacters(
+  $filter: ModelCharacterFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listCharacters(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       name
-      posts {
-        nextToken
+      status
+      species
+      type
+      gender
+      origin {
+        id
+        name
+        type
+        dimension
+        created
       }
+      location {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      image
+      episode {
+        id
+        name
+        air_date
+        episode
+        created
+      }
+      created
     }
     nextToken
   }
 }
 `;
-export const getPost = `query GetPost($id: ID!) {
-  getPost(id: $id) {
+export const getEpisode = `query GetEpisode($id: ID!) {
+  getEpisode(id: $id) {
     id
-    title
-    blog {
+    name
+    air_date
+    episode
+    characters {
       id
       name
-      posts {
-        nextToken
-      }
-    }
-    comments {
-      items {
+      status
+      species
+      type
+      gender
+      origin {
         id
-        content
+        name
+        type
+        dimension
+        created
       }
-      nextToken
+      location {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      image
+      episode {
+        id
+        name
+        air_date
+        episode
+        created
+      }
+      created
     }
+    created
   }
 }
 `;
-export const listPosts = `query ListPosts(
-  $filter: ModelPostFilterInput
+export const listEpisodes = `query ListEpisodes(
+  $filter: ModelEpisodeFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listEpisodes(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      title
-      blog {
+      name
+      air_date
+      episode
+      characters {
         id
         name
+        status
+        species
+        type
+        gender
+        image
+        created
       }
-      comments {
-        nextToken
-      }
-    }
-    nextToken
-  }
-}
-`;
-export const getComment = `query GetComment($id: ID!) {
-  getComment(id: $id) {
-    id
-    content
-    post {
-      id
-      title
-      blog {
-        id
-        name
-      }
-      comments {
-        nextToken
-      }
-    }
-  }
-}
-`;
-export const listComments = `query ListComments(
-  $filter: ModelCommentFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      content
-      post {
-        id
-        title
-      }
+      created
     }
     nextToken
   }

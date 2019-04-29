@@ -160,3 +160,318 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
   }
 }
 `;
+export const createCharacter = `mutation CreateCharacter($input: CreateCharacterInput!) {
+  createCharacter(input: $input) {
+    id
+    name
+    status
+    species
+    type
+    gender
+    origin {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    location {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    image
+    episode {
+      id
+      name
+      air_date
+      episode
+      characters {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const updateCharacter = `mutation UpdateCharacter($input: UpdateCharacterInput!) {
+  updateCharacter(input: $input) {
+    id
+    name
+    status
+    species
+    type
+    gender
+    origin {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    location {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    image
+    episode {
+      id
+      name
+      air_date
+      episode
+      characters {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const deleteCharacter = `mutation DeleteCharacter($input: DeleteCharacterInput!) {
+  deleteCharacter(input: $input) {
+    id
+    name
+    status
+    species
+    type
+    gender
+    origin {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    location {
+      id
+      name
+      type
+      dimension
+      residents {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    image
+    episode {
+      id
+      name
+      air_date
+      episode
+      characters {
+        id
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const createEpisode = `mutation CreateEpisode($input: CreateEpisodeInput!) {
+  createEpisode(input: $input) {
+    id
+    name
+    air_date
+    episode
+    characters {
+      id
+      name
+      status
+      species
+      type
+      gender
+      origin {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      location {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      image
+      episode {
+        id
+        name
+        air_date
+        episode
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const updateEpisode = `mutation UpdateEpisode($input: UpdateEpisodeInput!) {
+  updateEpisode(input: $input) {
+    id
+    name
+    air_date
+    episode
+    characters {
+      id
+      name
+      status
+      species
+      type
+      gender
+      origin {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      location {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      image
+      episode {
+        id
+        name
+        air_date
+        episode
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;
+export const deleteEpisode = `mutation DeleteEpisode($input: DeleteEpisodeInput!) {
+  deleteEpisode(input: $input) {
+    id
+    name
+    air_date
+    episode
+    characters {
+      id
+      name
+      status
+      species
+      type
+      gender
+      origin {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      location {
+        id
+        name
+        type
+        dimension
+        created
+      }
+      image
+      episode {
+        id
+        name
+        air_date
+        episode
+        created
+      }
+      created
+    }
+    created
+  }
+}
+`;

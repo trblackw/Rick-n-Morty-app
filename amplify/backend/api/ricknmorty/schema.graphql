@@ -1,16 +1,31 @@
-type Blog @model {
-  id: ID!
-  name: String!
-  posts: [Post] @connection(name: "BlogPosts")
+type Character @model {
+   id: ID
+   name: String
+   status: String
+   species: String
+   type: String
+   gender: String
+   origin: Location
+   location: Location
+   image: String
+   episode: [Episode]
+   created: String
 }
-type Post @model {
-  id: ID!
-  title: String!
-  blog: Blog @connection(name: "BlogPosts")
-  comments: [Comment] @connection(name: "PostComments")
+
+type Episode @model {
+   id: ID
+   name: String
+   air_date: String
+   episode: String
+   characters: [Character]
+   created: String
 }
-type Comment @model {
-  id: ID!
-  content: String
-  post: Post @connection(name: "PostComments")
+
+type Location {
+   id: ID
+   name: String
+   type: String
+   dimension: String
+   residents: [Character]
+   created: String
 }
