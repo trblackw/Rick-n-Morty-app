@@ -1,6 +1,6 @@
 export interface IAppState {
-   episodeState: { episodes: IEpisode[]; updateEpisodes: () => void };
-   characterState: { characters: ICharacter[]; updateCharacters: () => void };
+   episodeState: { episodes: IEpisode[]; updateEpisodes(episode: IEpisode): void };
+   characterState: { characters: ICharacter[]; updateCharacters(character: ICharacter): void };
 }
 
 export interface IAction {
@@ -9,22 +9,24 @@ export interface IAction {
 }
 export interface IEpisodeState {
    episodes: IEpisode[];
-   favorites: IEpisode[];
+   favorites?: IEpisode[];
+   selectedEpisode?: IEpisode
+   // updateEpisodes(episode: IEpisode): void;
 }
 
 export interface ICharacterState {
    characters: ICharacter[];
+   // updateCharacters(character: ICharacter): void;
 }
 
 export interface IEpisode {
    id: number;
    name: string;
+   characters: string[];
    url: string;
-   summary: string;
-   image: { medium: string; original: string };
-   season: number;
-   airdate: string;
-   airtime: string;
+   episode: string;
+   created: string;
+   air_date: string;
 }
 
 export interface ICharacter {
