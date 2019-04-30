@@ -9,6 +9,7 @@ const Favorites = lazy<React.FunctionComponent<{}>>((): Promise<{
 const Characters = lazy<React.FunctionComponent<{}>>((): Promise<{
    default: React.FunctionComponent<{}>;
 }> => import('./components/Characters'));
+import Episode from './components/Episode';
 import Nav from './components/Nav';
 
 const App = () => (
@@ -18,8 +19,9 @@ const App = () => (
          <Switch>
             <Suspense fallback={<div>Loading...</div>}>
                <Route exact path='/' component={Episodes} />
-               <Route exact path='/favorites' component={Favorites} />
-               <Route exact path='/characters' component={Characters} />
+               <Route path='/episode/:id' component={Episode} />
+               <Route path='/favorites' component={Favorites} />
+               <Route path='/characters' component={Characters} />
             </Suspense>
          </Switch>
       </Router>
