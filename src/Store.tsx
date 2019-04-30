@@ -2,11 +2,12 @@ import React, { createContext, useReducer, useEffect, useState } from 'react';
 import { IEpisodeState, IAction, IEpisode, ReducerFunc, ICharacterState, IAppState } from './interfaces';
 
 //EPISODES
-export const EPISODES_URL: string = 'https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty&embed=episodes';
+export const EPISODES_URL: string = 'https://rickandmortyapi.com/api/episode/';
 export const FETCH_EPISODES: string = 'FETCH_EPISODES';
 export const ADD_TO_FAVORITES: string = 'ADD_TO_FAVORITES';
 export const REMOVE_FROM_FAVORITES: string = 'REMOVE_FROM_FAVORITES';
 export const CLEAR_FAVORITES: string = 'CLEAR_FAVORITES';
+export const FETCH_SINGLE_EPISODE: string = 'FETCH_SINGLE_EPISODE';
 
 const episodeReducer: ReducerFunc = (state: IEpisodeState, { type, payload }: IAction): IEpisodeState => {
    switch (type) {
@@ -18,13 +19,15 @@ const episodeReducer: ReducerFunc = (state: IEpisodeState, { type, payload }: IA
             !episodeIds.includes(episode.id) && unique.push(episode);
             return unique;
          }, []);
-
          localStorage.setItem('favorites', JSON.stringify(uniqueFavorites));
          return { ...state, favorites: uniqueFavorites };
+      case FETCH_SINGLE_EPISODE:
+      localStorage.setItem('selectedEpisode', JSON.stringify(payload));
+         return { ...state, selectedEpisode: payload }
       case REMOVE_FROM_FAVORITES:
          localStorage.clear();
-         localStorage.setItem('favorites', JSON.stringify(state.favorites.filter(({ id }) => id !== payload.id)));
-         return { ...state, favorites: state.favorites.filter(({ id }) => id !== payload.id) };
+         localStorage.setItem('favorites', JSON.stringify(state.favorites && state.favorites.filter(({ id }) => id !== payload.id)));
+         return { ...state, favorites: state.favorites && state.favorites.filter(({ id }) => id !== payload.id) };
       case CLEAR_FAVORITES:
          localStorage.clear();
          return { ...state, favorites: [] };
@@ -78,3 +81,6 @@ export const StoreProvider = ({ children }: any): JSX.Element => {
 
    return <Store.Provider value={{ state: appState }}>{children}</Store.Provider>;
 };
+
+
+// https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty&embed=episodes
