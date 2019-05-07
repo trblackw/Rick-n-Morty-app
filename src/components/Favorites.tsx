@@ -3,25 +3,33 @@ import { Store } from '../Store';
 import { IEpisode } from '../interfaces';
 
 const Favorites: React.FunctionComponent = (): JSX.Element => {
-   const { state: { favorites }, dispatch } = useContext(Store);
+   const { state: { episodeState: { episodes: { favorites } }, updateEpisodes } } = useContext(Store);
+
+   useEffect(
+      () => {
+         console.log(favorites);
+      },
+      [favorites]
+   );
 
    return (
       <div className='p-5 bg-indigo-darker flex flex-col justify-center'>
-         {favorites.length > 0 &&
+         {favorites && favorites.length > 0 ? (
             favorites.map((episode: IEpisode) => (
                <Fragment key={episode.id}>
                   <div className='flex flex-row justify-start p-5 shadow rounded bg-indigo-dark text-white my-3'>
                      <div>
                         <div className='flex flex-col justify-center p-2 m-3'>
                            <h4 className='text-4xl'>{episode.name}</h4>
-                           <span>Aired: {episode.airdate}</span>
+                           <span>Aired: {episode.air_date}</span>
                         </div>
-                        <img src={episode.image.original} alt='episode image' className='rounded' />
                      </div>
-                     <div className='inline-block'>{episode.summary}</div>
                   </div>
                </Fragment>
-            ))}
+            ))
+         ) : (
+            <div>No faves</div>
+         )}
       </div>
    );
 };
