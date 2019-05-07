@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { CLEAR_FAVORITES } from '../Store';
 
 const Nav = () => {
-   const { state: { favorites }, dispatch } = useContext(Store);
+   const { state: { episodeState: { episodes: { favorites }, updateEpisodes } } } = useContext(Store);
    return (
       <nav className='flex items-center justify-between flex-wrap mb-0 bg-purple-dark sticky p-6'>
          <div className='flex items-center flex-no-shrink text-white mr-6 sticky'>
@@ -30,7 +30,7 @@ const Nav = () => {
             <div>
                <button
                   className='inline-block text-lg px-4 py-2 leading-none border rounded text-white border-white mx-2 hover:border-transparent hover:text-white hover:bg-green mt-4 lg:mt-0'
-                  onClick={() => dispatch({ type: CLEAR_FAVORITES })}>
+                  onClick={() => updateEpisodes({ type: CLEAR_FAVORITES })}>
                   Clear Favorites
                </button>
             </div>
