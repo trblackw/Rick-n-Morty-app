@@ -3,7 +3,7 @@ import { Store, FETCH_EPISODES, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES, EPISODE
 import { Link } from 'react-router-dom';
 import { IEpisode, IAction } from '../interfaces';
 
-const Episodes: React.FunctionComponent = (): JSX.Element => {
+const Episodes: React.FC = (): JSX.Element => {
    const { state: { episodeState: { episodes, updateEpisodes } } } = useContext(Store);
 
    useEffect(() => {

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, Fragment } from 'react';
 import { Store } from '../Store';
 import { IEpisode } from '../interfaces';
 
-const Favorites: React.FunctionComponent = (): JSX.Element => {
+const Favorites: React.FC = (): JSX.Element => {
    const { state: { episodeState: { episodes: { favorites } }, updateEpisodes } } = useContext(Store);
 
    useEffect(

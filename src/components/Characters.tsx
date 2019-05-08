@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { CHARACTERS_URL } from '../Store';
 
-const Characters = () => {
+const Characters: React.FC = (): JSX.Element => {
    useEffect(() => {
       fetchCharacters();
    }, []);

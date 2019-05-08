@@ -4,7 +4,7 @@ import { Store } from '../Store';
 import { Link } from 'react-router-dom';
 import { CLEAR_FAVORITES } from '../Store';
 
-const Nav = () => {
+const Nav: React.FC = (): JSX.Element => {
    const { state: { episodeState: { episodes: { favorites }, updateEpisodes } } } = useContext(Store);
    return (
       <nav className='flex items-center justify-between flex-wrap mb-0 bg-purple-dark sticky p-6'>
