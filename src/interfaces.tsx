@@ -7,10 +7,18 @@ export interface IAction {
    type: string;
    payload: any;
 }
+
+export type Info = {
+   count: number;
+   pages: number;
+   next: string;
+   prev: string;
+}
 export interface IEpisodeState {
    episodes: IEpisode[];
    favorites?: IEpisode[];
-   selectedEpisode?: IEpisode
+   selectedEpisode?: IEpisode;
+   info: Info | {};
    // updateEpisodes(episode: IEpisode): void;
 }
 
