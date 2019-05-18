@@ -58,6 +58,5 @@ export interface IInfo {
    prev?: string;
 }
 
-export interface ReducerFunc {
-   (state: ICharacterState | IEpisodeState | any, { type, payload }: IAction): ICharacterState | IEpisodeState;
-}
+
+export type ReducerFunc = (state: ICharacterState | IEpisodeState, action: IAction) => any;
