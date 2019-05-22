@@ -29,15 +29,15 @@ const Episodes: React.FC = (): JSX.Element => {
       });
 
    return (
-      <div className='p-3 m-auto bg-indigo-darker text-grey-lightest'>
+      <div className='p-3 m-auto bg-indigo-500 text-gray-100'>
          {episodeState &&
             episodeState.episodes.length > 0 &&
             episodeState.episodes.map((episode: IEpisode) => (
                <Fragment key={episode.id}>
-                  <div className='m-4 mx-auto p-5 bg-indigo shadow rounded w-3/5 flex justify-between'>
+                  <div className='m-4 mx-auto p-5 bg-indigo-700 shadow rounded w-3/5 flex justify-between'>
                      <div>
                         <h3>
-                           <a href={episode.url} className='no-underline text-grey-lightest hover:text-grey-light'>
+                           <a href={episode.url} className='no-underline text-gray-100 hover:text-gray-300'>
                               {episode.name}
                            </a>
                         </h3>
@@ -46,7 +46,7 @@ const Episodes: React.FC = (): JSX.Element => {
                      <br />
                      <div>
                         <Link to={`episode/${episode.id}`}>
-                           <button className='bg-orange-light text-sm mx-2 hover:bg-orange text-grey-lightest shadow py-2 px-4 rounded-full'>
+                           <button className='bg-orange-400 text-sm mx-2 hover:bg-orange-300 text-grey-100 shadow py-2 px-4 rounded-full'>
                               View details
                            </button>
                         </Link>
@@ -64,7 +64,7 @@ const Episodes: React.FC = (): JSX.Element => {
    );
 };
 
-const addToFavoritesBtn: string = 'bg-green-light mx-2 text-sm hover:bg-green text-grey-lightest shadow py-2 px-4 rounded-full';
-const removeFromFavoritesBtn: string = 'bg-red-light mx-2 text-sm hover:bg-red text-grey-lightest shadow py-2 px-4 rounded-full';
+const addToFavoritesBtn: string = 'bg-green-400 mx-2 text-sm hover:bg-green text-gray-100 shadow py-2 px-4 rounded-full';
+const removeFromFavoritesBtn: string = 'bg-red-200 mx-2 text-sm hover:bg-red text-gray-100 shadow py-2 px-4 rounded-full';
 
 export default Episodes;

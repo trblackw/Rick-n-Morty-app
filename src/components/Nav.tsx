@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Logo from '../assets/rickmortylogo.png';
 import { Store } from '../Store';
 import { Link } from 'react-router-dom';
 import { CLEAR_FAVORITES } from '../Store';
 
 const Nav: React.FC = (): JSX.Element => {
-   const { state: { episodeState: { episodes: { favorites }, updateEpisodes } } } = useContext(Store);
+   const { state: { episodeState }, dispatch } = useContext(Store);
+
    return (
-      <nav className='flex items-center justify-between flex-wrap mb-0 bg-purple-dark sticky p-6'>
+      <nav className='flex items-center justify-between flex-wrap mb-0 bg-purple-700 border-b-2 border-purple-800 shadow sticky p-6'>
          <div className='flex items-center flex-no-shrink text-white mr-6 sticky'>
             <span className='tracking-tight'>
                <Link to='/'>
@@ -23,14 +24,14 @@ const Nav: React.FC = (): JSX.Element => {
             <div>
                <Link
                   to='/favorites'
-                  className='inline-block text-lg px-4 mx-2 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-white hover:bg-green mt-4 lg:mt-0'>
-                  Favorites: {favorites.length}
+                  className='inline-block text-lg px-4 mx-2 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-white hover:bg-green-400 mt-4 lg:mt-0'>
+                  Favorites: {episodeState && episodeState.favorites.length}
                </Link>
             </div>
             <div>
                <button
-                  className='inline-block text-lg px-4 py-2 leading-none border rounded text-white border-white mx-2 hover:border-transparent hover:text-white hover:bg-green mt-4 lg:mt-0'
-                  onClick={() => updateEpisodes({ type: CLEAR_FAVORITES })}>
+                  className='inline-block text-lg px-4 py-2 leading-none border rounded text-white border-white mx-2 hover:border-transparent hover:text-white hover:bg-green-400 mt-4 lg:mt-0'
+                  onClick={() => dispatch({ type: CLEAR_FAVORITES })}>
                   Clear Favorites
                </button>
             </div>
