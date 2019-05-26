@@ -9,12 +9,20 @@ const Episodes: React.FC = (): JSX.Element => {
    const { state: { episodeState }, dispatch } = useContext(Store);
    const [page, setPage] = useState<number>(1);
    const [search, setSearch] = useState<string>('');
+   const [searchMatches, setSearchMatches] = useState<IEpisode[]>([]);
 
    useEffect(
       () => {
          fetchEpisodes();
       },
       [page]
+   );
+
+   useEffect(
+      () => {
+         searchEpisodes();
+      },
+      [search]
    );
 
    const fetchEpisodes = async (): Promise<void> => {
@@ -27,17 +35,21 @@ const Episodes: React.FC = (): JSX.Element => {
       }
    };
 
+   const searchEpisodes = () => {
+      const query: false | RegExp = search !== '' && new RegExp(search, 'gi');
+      const episodes: false | IEpisode[] = episodeState && episodeState.episodes;
+      if (!query || !episodes) return;
+      setSearchMatches(episodes.filter(({ name }: IEpisode) => query.test(name)));
+   };
+
    const toggleFavorite = (episode: IEpisode): IAction =>
       dispatch({
          type: episodeState.favorites.includes(episode) ? REMOVE_FROM_FAVORITES : ADD_TO_FAVORITES,
          payload: episode
       });
 
-   const renderEpisodes = (episodes: IEpisode[]): JSX.Element[] => {
-      if (search.length) {
-         episodes = episodes.filter(({ name }: IEpisode): boolean => new RegExp(search).test(name));
-      }
-      return episodes.map((episode: IEpisode): JSX.Element => (
+   const renderEpisodes = (episodes: IEpisode[]): JSX.Element[] =>
+      episodes.map((episode: IEpisode): JSX.Element => (
          <Fragment key={episode.id}>
             <div className='p-5 bg-indigo-700 shadow rounded mx-auto w-4/5 flex justify-between'>
                <div>
@@ -64,9 +76,8 @@ const Episodes: React.FC = (): JSX.Element => {
             </div>
          </Fragment>
       ));
-   };
 
-   return (
+   return !episodeState ? <div>Loading...</div> : (
       <div className='p-3 m-auto bg-indigo-500 text-gray-100'>
          <div className='flex justify-between'>
             {episodeState && episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} />}
@@ -81,9 +92,10 @@ const Episodes: React.FC = (): JSX.Element => {
             </div>
          </div>
          <Grid minColumnWidth={650} gridGap={20}>
-            {episodeState && episodeState.episodes ? renderEpisodes(episodeState.episodes) : <div>Loading...</div>}
+            {episodeState.episodes && search.length ? renderEpisodes(searchMatches) : renderEpisodes(episodeState.episodes)}
+            {/* {episodeState.episodes ? renderEpisodes(episodeState.episodes) : <div>Loading...</div>} */}
          </Grid>
-         {episodeState && episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} />}
+         {episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} />}
       </div>
    );
 };
