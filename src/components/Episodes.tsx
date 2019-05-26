@@ -1,16 +1,21 @@
-import React, { useContext, useEffect, Fragment, useState } from 'react';
+import React, { useContext, useEffect, Fragment, useState, ChangeEvent } from 'react';
 import { Store, FETCH_EPISODES, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES, generateEpisodesUrl } from '../Store';
 import { Link } from 'react-router-dom';
 import { IEpisode, IAction } from '../interfaces';
 import Pagination from './Pagination';
+import Grid from './Grid';
 
 const Episodes: React.FC = (): JSX.Element => {
    const { state: { episodeState }, dispatch } = useContext(Store);
    const [page, setPage] = useState<number>(1);
+   const [search, setSearch] = useState<string>('');
 
-   useEffect(() => {
-      fetchEpisodes();
-   }, [page]);
+   useEffect(
+      () => {
+         fetchEpisodes();
+      },
+      [page]
+   );
 
    const fetchEpisodes = async (): Promise<void> => {
       try {
@@ -28,38 +33,57 @@ const Episodes: React.FC = (): JSX.Element => {
          payload: episode
       });
 
+   const renderEpisodes = (episodes: IEpisode[]): JSX.Element[] => {
+      if (search.length) {
+         episodes = episodes.filter(({ name }: IEpisode): boolean => new RegExp(search).test(name));
+      }
+      return episodes.map((episode: IEpisode): JSX.Element => (
+         <Fragment key={episode.id}>
+            <div className='p-5 bg-indigo-700 shadow rounded mx-auto w-4/5 flex justify-between'>
+               <div>
+                  <h3>
+                     <a href={episode.url} className='no-underline text-gray-100 hover:text-gray-300'>
+                        {episode.name}
+                     </a>
+                  </h3>
+                  <p>Season {episode.episode}</p>
+               </div>
+               <br />
+               <div>
+                  <Link to={`episode/${episode.id}`}>
+                     <button className='bg-orange-400 text-sm mx-2 hover:bg-orange-300 text-grey-100 shadow py-2 px-4 rounded-full'>
+                        View details
+                     </button>
+                  </Link>
+                  <button
+                     className={episodeState.favorites.includes(episode) ? removeFromFavoritesBtn : addToFavoritesBtn}
+                     onClick={() => toggleFavorite(episode)}>
+                     {episodeState.favorites.includes(episode) ? 'Remove from' : 'Add to'} favorites
+                  </button>
+               </div>
+            </div>
+         </Fragment>
+      ));
+   };
+
    return (
       <div className='p-3 m-auto bg-indigo-500 text-gray-100'>
-         {episodeState &&
-            episodeState.episodes.length > 0 &&
-            episodeState.episodes.map((episode: IEpisode) => (
-               <Fragment key={episode.id}>
-                  <div className='m-4 mx-auto p-5 bg-indigo-700 shadow rounded w-3/5 flex justify-between'>
-                     <div>
-                        <h3>
-                           <a href={episode.url} className='no-underline text-gray-100 hover:text-gray-300'>
-                              {episode.name}
-                           </a>
-                        </h3>
-                        <p>Season {episode.episode}</p>
-                     </div>
-                     <br />
-                     <div>
-                        <Link to={`episode/${episode.id}`}>
-                           <button className='bg-orange-400 text-sm mx-2 hover:bg-orange-300 text-grey-100 shadow py-2 px-4 rounded-full'>
-                              View details
-                           </button>
-                        </Link>
-                        <button
-                           className={episodeState.favorites.includes(episode) ? removeFromFavoritesBtn : addToFavoritesBtn}
-                           onClick={() => toggleFavorite(episode)}>
-                           {episodeState.favorites.includes(episode) ? 'Remove from' : 'Add to'} favorites
-                        </button>
-                     </div>
-                  </div>
-               </Fragment>
-            ))}
-         {episodeState && episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage}/>}
+         <div className='flex justify-between'>
+            {episodeState && episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} />}
+            <div className='align-middle'>
+               <input
+                  type='text'
+                  placeholder='Search episodes'
+                  className='mt-4 shadow appearance-none border rounded w-full py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                  value={search}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+               />
+            </div>
+         </div>
+         <Grid minColumnWidth={650} gridGap={20}>
+            {episodeState && episodeState.episodes ? renderEpisodes(episodeState.episodes) : <div>Loading...</div>}
+         </Grid>
+         {episodeState && episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} />}
       </div>
    );
 };
