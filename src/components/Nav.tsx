@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import Logo from '../assets/rickmortylogo.png';
 import { Store } from '../Store';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { CLEAR_FAVORITES } from '../Store';
 
 const Nav: React.FC = (): JSX.Element => {
@@ -22,22 +22,32 @@ const Nav: React.FC = (): JSX.Element => {
                <a href='#responsive-header' className='block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4' />
             </div>
             <div>
-               <Link
+               <NavLink
                   to='/favorites'
-                  className='inline-block text-lg px-4 mx-2 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-white hover:bg-green-400 mt-4 lg:mt-0'>
+                  className={NavLinkStyles}
+                  activeClassName='inline-block text-lg px-4 mx-2 py-2 leading-none border rounded text-white border-white hover:border-transparent text-white bg-green-400 mt-4 lg:mt-0'>
                   Favorites: {episodeState && episodeState.favorites.length}
-               </Link>
+               </NavLink>
             </div>
             <div>
-               <button
-                  className='inline-block text-lg px-4 py-2 leading-none border rounded text-white border-white mx-2 hover:border-transparent hover:text-white hover:bg-green-400 mt-4 lg:mt-0'
-                  onClick={() => dispatch({ type: CLEAR_FAVORITES })}>
+               <button className={NavLinkStyles} onClick={() => dispatch({ type: CLEAR_FAVORITES })}>
                   Clear Favorites
                </button>
+            </div>
+            <div>
+               <NavLink
+                  to='/characters'
+                  className={NavLinkStyles}
+                  activeClassName='inline-block text-lg px-4 mx-2 py-2 leading-none border rounded text-white border-white hover:border-transparent text-white bg-green-400 mt-4 lg:mt-0'>
+                  Character List
+               </NavLink>
             </div>
          </div>
       </nav>
    );
 };
+
+const NavLinkStyles =
+   'inline-block text-lg px-4 mx-2 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-white hover:bg-green-400 mt-4 lg:mt-0';
 
 export default Nav;
