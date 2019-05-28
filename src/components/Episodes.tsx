@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, Fragment, useState, ChangeEvent } from 'react';
+import React, { useContext, useEffect, Fragment, useState, ChangeEvent, useCallback } from 'react';
 import { Store, FETCH_EPISODES, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES, generateEpisodesUrl } from '../Store';
 import { Link } from 'react-router-dom';
 import { IEpisode, IAction } from '../interfaces';
 import Pagination from './Pagination';
 import Grid from './Grid';
+import { formatEpisode } from '../utils';
 
 const Episodes: React.FC = (): JSX.Element => {
    const { state: { episodeState }, dispatch } = useContext(Store);
+   const [loading, setLoading] = useState<boolean>(false);
    const [page, setPage] = useState<number>(1);
    const [search, setSearch] = useState<string>('');
    const [searchMatches, setSearchMatches] = useState<IEpisode[]>([]);
@@ -27,20 +29,28 @@ const Episodes: React.FC = (): JSX.Element => {
 
    const fetchEpisodes = async (): Promise<void> => {
       try {
-         const res = await fetch(generateEpisodesUrl(page));
+         setLoading(true);
+         const res = await fetch(generateEpisodesUrl(FETCH_EPISODES, page));
          const { info, results: episodes } = await res.json();
-         return dispatch({ type: FETCH_EPISODES, payload: { episodes, info } });
+         dispatch({ type: FETCH_EPISODES, payload: { episodes, info } });
+         setLoading(false);
       } catch (error) {
          console.error(error);
       }
    };
 
-   const searchEpisodes = () => {
-      const query: false | RegExp = search !== '' && new RegExp(search, 'gi');
-      const episodes: false | IEpisode[] = episodeState && episodeState.episodes;
-      if (!query || !episodes) return;
-      setSearchMatches(episodes.filter(({ name }: IEpisode) => query.test(name)));
-   };
+   const searchEpisodes = useCallback(
+      async () => {
+         const query: false | RegExp = search !== '' && new RegExp(search, 'gi');
+         const [page1, page2] = await Promise.all(
+            [generateEpisodesUrl(FETCH_EPISODES, 1), generateEpisodesUrl(FETCH_EPISODES, 2)].map(url => fetch(url).then(res => res.json()))
+         );
+         const allEpisodes: IEpisode[] = [...page1.results, ...page2.results];
+         if (!query || !allEpisodes) return;
+         setSearchMatches(allEpisodes.filter(({ name }: IEpisode) => query.test(name)));
+      },
+      [search]
+   );
 
    const toggleFavorite = (episode: IEpisode): IAction =>
       dispatch({
@@ -58,7 +68,7 @@ const Episodes: React.FC = (): JSX.Element => {
                         {episode.name}
                      </a>
                   </h3>
-                  <p>Season {episode.episode}</p>
+                  <p className='text-sm text-gray-300'>Season {formatEpisode(episode.episode)}</p>
                </div>
                <br />
                <div>
@@ -77,10 +87,12 @@ const Episodes: React.FC = (): JSX.Element => {
          </Fragment>
       ));
 
-   return !episodeState ? <div>Loading...</div> : (
+   return loading ? (
+      <div>Loading...</div>
+   ) : (
       <div className='p-3 m-auto bg-indigo-500 text-gray-100'>
          <div className='flex justify-between'>
-            {episodeState && episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} />}
+            {episodeState && episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} visible={search === ''} />}
             <div className='align-middle'>
                <input
                   type='text'
@@ -93,9 +105,8 @@ const Episodes: React.FC = (): JSX.Element => {
          </div>
          <Grid minColumnWidth={650} gridGap={20}>
             {episodeState.episodes && search.length ? renderEpisodes(searchMatches) : renderEpisodes(episodeState.episodes)}
-            {/* {episodeState.episodes ? renderEpisodes(episodeState.episodes) : <div>Loading...</div>} */}
          </Grid>
-         {episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} />}
+         {episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} visible={search === ''} />}
       </div>
    );
 };
