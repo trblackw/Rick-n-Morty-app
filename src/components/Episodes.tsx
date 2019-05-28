@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, Fragment, useState, ChangeEvent, useCallback } from 'react';
-import { Store, FETCH_EPISODES, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES, generateEpisodesUrl } from '../Store';
+import { Store, FETCH_EPISODES, EPISODES_URL, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES, generateEpisodesUrl } from '../Store';
 import { Link } from 'react-router-dom';
 import { IEpisode, IAction } from '../interfaces';
 import Pagination from './Pagination';
@@ -27,10 +27,17 @@ const Episodes: React.FC = (): JSX.Element => {
       [search]
    );
 
+   useEffect(
+      () => {
+         console.log(episodeState);
+      },
+      [episodeState]
+   );
+
    const fetchEpisodes = async (): Promise<void> => {
       try {
          setLoading(true);
-         const res = await fetch(generateEpisodesUrl(FETCH_EPISODES, page));
+         const res = await fetch(generateEpisodesUrl(EPISODES_URL, page));
          const { info, results: episodes } = await res.json();
          dispatch({ type: FETCH_EPISODES, payload: { episodes, info } });
          setLoading(false);
@@ -42,9 +49,11 @@ const Episodes: React.FC = (): JSX.Element => {
    const searchEpisodes = useCallback(
       async () => {
          const query: false | RegExp = search !== '' && new RegExp(search, 'gi');
+         console.log(generateEpisodesUrl(EPISODES_URL, 1));
          const [page1, page2] = await Promise.all(
-            [generateEpisodesUrl(FETCH_EPISODES, 1), generateEpisodesUrl(FETCH_EPISODES, 2)].map(url => fetch(url).then(res => res.json()))
+            [generateEpisodesUrl(EPISODES_URL, 1), generateEpisodesUrl(EPISODES_URL, 2)].map(url => fetch(url).then(res => res.json()))
          );
+         console.log(page1);
          const allEpisodes: IEpisode[] = [...page1.results, ...page2.results];
          if (!query || !allEpisodes) return;
          setSearchMatches(allEpisodes.filter(({ name }: IEpisode) => query.test(name)));
@@ -61,7 +70,7 @@ const Episodes: React.FC = (): JSX.Element => {
    const renderEpisodes = (episodes: IEpisode[]): JSX.Element[] =>
       episodes.map((episode: IEpisode): JSX.Element => (
          <Fragment key={episode.id}>
-            <div className='p-5 bg-indigo-700 shadow rounded mx-auto w-4/5 flex justify-between'>
+            <div className='p-5 bg-indigo-700 rounded mx-auto w-4/5 flex justify-between'>
                <div>
                   <h3>
                      <a href={episode.url} className='no-underline text-gray-100 hover:text-gray-300'>
@@ -87,7 +96,7 @@ const Episodes: React.FC = (): JSX.Element => {
          </Fragment>
       ));
 
-   return loading ? (
+   return loading || !episodeState ? (
       <div>Loading...</div>
    ) : (
       <div className='p-3 m-auto bg-indigo-500 text-gray-100'>
