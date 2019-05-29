@@ -24,7 +24,7 @@ export interface IEpisodeState {
 
 export interface ICharacterState {
    characters: ICharacter[];
-   // updateCharacters(character: ICharacter): void;
+   info: Info | {};
 }
 
 export interface IEpisode {
@@ -46,7 +46,7 @@ export interface ICharacter {
    name: string;
    origin: { name: string; url: string };
    species: string;
-   status: 'Alive' | 'Dead';
+   status: 'Alive' | 'Dead' | 'unknown';
    type?: string;
    url: string;
 }
@@ -59,4 +59,4 @@ export interface IInfo {
 }
 
 
-export type ReducerFunc = (state: ICharacterState | IEpisodeState, action: IAction) => any;
+export type ReducerFunc = (state: ICharacterState | IEpisodeState | any, action: IAction) => any;
