@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import Logo from '../assets/rickmortylogo.png';
-import { Store } from '../Store';
+import Logo from '../../assets/rickmortylogo.png';
+import { Store } from '../../Store';
 import { Link, NavLink } from 'react-router-dom';
-import { CLEAR_FAVORITES } from '../Store';
+import { CLEAR_FAVORITES } from '../../Store';
 
 const Nav: React.FC = (): JSX.Element => {
    const { state: { episodeState }, dispatch } = useContext(Store);

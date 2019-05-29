@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, Fragment, useState, ChangeEvent, useCallback } from 'react';
-import { Store, FETCH_EPISODES, EPISODES_URL, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES, generateEpisodesUrl } from '../Store';
+import { Store, FETCH_EPISODES, EPISODES_URL, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES, generateEpisodesUrl } from '../../Store';
 import { Link } from 'react-router-dom';
-import { IEpisode, IAction } from '../interfaces';
-import Pagination from './Pagination';
-import Grid from './Grid';
-import { formatEpisode } from '../utils';
+import { IEpisode, IAction } from '../../interfaces';
+import Pagination from '../elements/Pagination';
+import Grid from '../elements/Grid';
+import { formatEpisode } from '../../utils';
 
 const Episodes: React.FC = (): JSX.Element => {
    const { state: { episodeState }, dispatch } = useContext(Store);

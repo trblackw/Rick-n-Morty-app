@@ -1,14 +1,14 @@
 import React, { Fragment, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Episodes from './components/Episodes';
-import Episode from './components/Episode';
-import Nav from './components/Nav';
+import Episodes from './components/views/Episodes';
+import Episode from './components/views/Episode';
+import Nav from './components/elements/Nav';
 const Favorites = lazy<React.FC<{}>>((): Promise<{
    default: React.FC<{}>;
-}> => import('./components/Favorites'));
+}> => import('./components/views/Favorites'));
 const Characters = lazy<React.FC<{}>>((): Promise<{
    default: React.FC<{}>;
-}> => import('./components/Characters'));
+}> => import('./components/views/Characters'));
 
 const App = () => (
    <Fragment>

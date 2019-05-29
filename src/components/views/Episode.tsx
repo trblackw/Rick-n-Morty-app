@@ -1,8 +1,8 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Store, FETCH_SINGLE_EPISODE } from '../Store';
+import { Store, FETCH_SINGLE_EPISODE } from '../../Store';
 
 import { RouteComponentProps } from 'react-router-dom';
-import { IEpisode } from '../interfaces';
+import { IEpisode } from '../../interfaces';
 
 type Params = { id: string };
 
