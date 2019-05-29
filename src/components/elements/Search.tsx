@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, Dispatch, SetStateAction, ChangeEvent } from 'react';
 
 export interface Filters {
    name?: boolean;
@@ -8,21 +8,22 @@ export interface Filters {
    gender?: boolean;
 }
 
-const Search: React.FC = (): JSX.Element => {
-   const [filters, setFilters] = useState<Filters>({
-      name: true,
-      status: false,
-      species: false,
-      type: false,
-      gender: false
-   });
-   const [activeFilter, setActiveFilter] = useState<string>('name')
+interface Props {
+   filters: Filters;
+   setFilters: Dispatch<SetStateAction<Filters>>;
+   activeFilter: string;
+   setActiveFilter: Dispatch<SetStateAction<string>>;
+   search: string;
+   setSearch: Dispatch<SetStateAction<string>>
+}
 
+const Search: React.FC<Props> = ({ filters, setFilters, activeFilter, setActiveFilter, search = "", setSearch }): JSX.Element => {
    const applyFilter = (activeFilter: string): void => {
       //ensure only one filter is applied at a time
-      const nulledFilters: Filters = { name: false, status: false, species: false, type: false, gender: false }
-      setFilters({...nulledFilters, [activeFilter]: true });
+      const nulledFilters: Filters = { name: false, status: false, species: false, type: false, gender: false };
+      const appliedFilter: Filters = { ...nulledFilters, [activeFilter]: true };
       setActiveFilter(activeFilter);
+      setFilters(appliedFilter);
    }
 
    const activeClass = 'bg-indigo-600';
@@ -33,6 +34,8 @@ const Search: React.FC = (): JSX.Element => {
             <input
                className='w-full h-16 px-3 rounded mb-8 focus:outline-none focus:shadow-outline text-xl px-8 shadow-lg'
                type='search'
+               value={search}
+               onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
                placeholder={`Search by ${activeFilter}`}
             />
             <nav className='flex'>
