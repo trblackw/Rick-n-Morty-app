@@ -1,4 +1,5 @@
-import React, { useState, Dispatch, SetStateAction, ChangeEvent } from 'react';
+import React, { Dispatch, SetStateAction, ChangeEvent, useState, useCallback, Fragment } from 'react';
+import { ICharacter } from '../../interfaces';
 
 export interface Filters {
    name?: boolean;
@@ -14,36 +15,89 @@ interface Props {
    activeFilter: string;
    setActiveFilter: Dispatch<SetStateAction<string>>;
    search: string;
-   setSearch: Dispatch<SetStateAction<string>>
+   setSearch: Dispatch<SetStateAction<string>>;
+   searchData: ICharacter[];
+   setSearchMatches: Dispatch<SetStateAction<ICharacter[]>>;
 }
 
-const Search: React.FC<Props> = ({ filters, setFilters, activeFilter, setActiveFilter, search = "", setSearch }): JSX.Element => {
+const Search: React.FC<Props> = ({
+   filters,
+   setFilters,
+   activeFilter,
+   setActiveFilter,
+   search = '',
+   setSearch,
+   searchData,
+   setSearchMatches
+}): JSX.Element => {
+   const [localSearchResults, setLocalSearchResults] = useState<ICharacter[]>([]);
    const applyFilter = (activeFilter: string): void => {
       //ensure only one filter is applied at a time
       const nulledFilters: Filters = { name: false, status: false, species: false, type: false, gender: false };
       const appliedFilter: Filters = { ...nulledFilters, [activeFilter]: true };
       setActiveFilter(activeFilter);
       setFilters(appliedFilter);
-   }
+   };
+   const applySearch = useCallback(
+      () => {
+         const query: false | RegExp = search !== '' && new RegExp(search, 'gi');
+         //address 'any' typing
+         const results = searchData.filter((character: ICharacter | any) => query && query.test(character[activeFilter]));
+         setLocalSearchResults(results);
+         setSearchMatches(results);
+      },
+      [search]
+   );
+
+   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+      setSearch(e.target.value);
+      applySearch();
+   };
 
    const activeClass = 'bg-indigo-600';
    const inactiveClass = 'bg-indigo-400 hover:bg-indigo-300';
    return (
-      <section className='bg-indigo-800 h-50 p-8'>
+      <section className='bg-indigo-800 h-50 p-8 rounded-md'>
          <div className='container mx-auto py-4'>
             <input
                className='w-full h-16 px-3 rounded mb-8 focus:outline-none focus:shadow-outline text-xl px-8 shadow-lg'
                type='search'
                value={search}
-               onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+               onChange={handleInput}
                placeholder={`Search by ${activeFilter}`}
             />
+            {localSearchResults.length > 0 && search !== "" && (
+               <Fragment>
+                  <br />
+                  <span className='text-gray-100 text-sm p-3 absolute inset-x-0 ml-16 top-5 h-8'>{localSearchResults.length} results</span>
+               </Fragment>
+            )}
             <nav className='flex'>
-               <button onClick={() => applyFilter('name')} className={`text-white py-2 px-3 font-medium mr-3 ${filters.name ? activeClass : inactiveClass}`}>Name</button>
-               <button onClick={() => applyFilter('status')} className={`text-white py-2 px-3 font-medium mx-3 ${filters.status ? activeClass : inactiveClass}`}>Status</button>
-               <button onClick={() => applyFilter('species')} className={`text-white py-2 px-3 font-medium mx-3 ${filters.species ? activeClass : inactiveClass}`}>Species</button>
-               <button onClick={() => applyFilter('type')} className={`text-white py-2 px-3 font-medium mx-3 ${filters.type ? activeClass : inactiveClass}`}>Type</button>
-               <button onClick={() => applyFilter('gender')} className={`text-white py-2 px-3 font-medium mx-3 ${filters.gender ? activeClass : inactiveClass}`}>Gender</button>
+               <button
+                  onClick={() => applyFilter('name')}
+                  className={`text-white py-2 px-3 font-medium mr-3 ${filters.name ? activeClass : inactiveClass}`}>
+                  Name
+               </button>
+               <button
+                  onClick={() => applyFilter('status')}
+                  className={`text-white py-2 px-3 font-medium mx-3 ${filters.status ? activeClass : inactiveClass}`}>
+                  Status
+               </button>
+               <button
+                  onClick={() => applyFilter('species')}
+                  className={`text-white py-2 px-3 font-medium mx-3 ${filters.species ? activeClass : inactiveClass}`}>
+                  Species
+               </button>
+               <button
+                  onClick={() => applyFilter('type')}
+                  className={`text-white py-2 px-3 font-medium mx-3 ${filters.type ? activeClass : inactiveClass}`}>
+                  Type
+               </button>
+               <button
+                  onClick={() => applyFilter('gender')}
+                  className={`text-white py-2 px-3 font-medium mx-3 ${filters.gender ? activeClass : inactiveClass}`}>
+                  Gender
+               </button>
             </nav>
          </div>
       </section>
