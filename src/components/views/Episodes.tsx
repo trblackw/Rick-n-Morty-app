@@ -27,13 +27,6 @@ const Episodes: React.FC = (): JSX.Element => {
       [search]
    );
 
-   useEffect(
-      () => {
-         console.log(episodeState);
-      },
-      [episodeState]
-   );
-
    const fetchEpisodes = async (): Promise<void> => {
       try {
          setLoading(true);
@@ -49,14 +42,12 @@ const Episodes: React.FC = (): JSX.Element => {
    const searchEpisodes = useCallback(
       async () => {
          const query: false | RegExp = search !== '' && new RegExp(search, 'gi');
-         console.log(generateEpisodesUrl(EPISODES_URL, 1));
          const [page1, page2] = await Promise.all(
             [generateEpisodesUrl(EPISODES_URL, 1), generateEpisodesUrl(EPISODES_URL, 2)].map(url => fetch(url).then(res => res.json()))
          );
-         console.log(page1);
          const allEpisodes: IEpisode[] = [...page1.results, ...page2.results];
          if (!query || !allEpisodes) return;
-         setSearchMatches(allEpisodes.filter(({ name }: IEpisode) => query.test(name)));
+         setSearchMatches(allEpisodes.filter(({ name }: IEpisode): boolean => query.test(name)));
       },
       [search]
    );
