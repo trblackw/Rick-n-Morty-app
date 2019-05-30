@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Episodes from './components/views/Episodes';
 import Episode from './components/views/Episode';
 import Nav from './components/elements/Nav';
+import Loading from './components/elements/Loading';
 const Favorites = lazy<React.FC<{}>>((): Promise<{
    default: React.FC<{}>;
 }> => import('./components/views/Favorites'));
@@ -15,7 +16,7 @@ const App = () => (
       <Router>
          <Nav />
          <Switch>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loading />}>
                <Route exact path='/' component={Episodes} />
                <Route path='/episode/:id' component={Episode} />
                <Route path='/favorites' component={Favorites} />
