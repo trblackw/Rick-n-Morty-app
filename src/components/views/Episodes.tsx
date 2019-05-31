@@ -5,12 +5,15 @@ import { IEpisode, IAction } from '../../interfaces';
 import Pagination from '../elements/Pagination';
 import Grid from '../elements/Grid';
 import { formatEpisode } from '../../utils';
+import Loading from '../elements/Loading';
+import Error from '../elements/Error';
 
 const Episodes: React.FC = (): JSX.Element => {
    const { state: { episodeState }, dispatch } = useContext(Store);
    const [loading, setLoading] = useState<boolean>(false);
    const [page, setPage] = useState<number>(1);
    const [search, setSearch] = useState<string>('');
+   const [error, setError] = useState<{ message: string | null }>({ message: null });
    const [searchMatches, setSearchMatches] = useState<IEpisode[]>([]);
 
    useEffect(
@@ -32,10 +35,12 @@ const Episodes: React.FC = (): JSX.Element => {
          setLoading(true);
          const res = await fetch(generateEpisodesUrl(EPISODES_URL, page));
          const { info, results: episodes } = await res.json();
+         console.log('TCL: episodes', episodes);
          dispatch({ type: FETCH_EPISODES, payload: { episodes, info } });
          setLoading(false);
       } catch (error) {
          console.error(error);
+         setError({ message: error.message });
       }
    };
 
@@ -88,7 +93,7 @@ const Episodes: React.FC = (): JSX.Element => {
       ));
 
    return loading || !episodeState ? (
-      <div>Loading...</div>
+      <Loading />
    ) : (
       <div className='p-3 m-auto bg-indigo-500 text-gray-100'>
          <div className='flex justify-between'>
@@ -106,6 +111,7 @@ const Episodes: React.FC = (): JSX.Element => {
          <Grid minColumnWidth={650} gridGap={20}>
             {episodeState.episodes && search.length ? renderEpisodes(searchMatches) : renderEpisodes(episodeState.episodes)}
          </Grid>
+         {error.message && <Error errorMessage={error.message} />}
          {episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} visible={search === ''} />}
       </div>
    );
