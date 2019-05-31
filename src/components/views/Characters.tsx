@@ -5,6 +5,7 @@ import Grid from '../elements/Grid';
 import Search, { Filters } from '../elements/Search';
 import useToggle from '../../hooks/useToggle';
 import Loading from '../elements/Loading';
+import { formatTimeStamp } from '../../utils';
 
 const Characters: React.FC = (): JSX.Element => {
    const [loading, setLoading] = useState<boolean>(false);
@@ -50,7 +51,7 @@ const Characters: React.FC = (): JSX.Element => {
       let fontColor: string = 'text-gray-400';
       if (status === 'Alive') fontColor = 'text-green-400';
       if (status === 'Dead') fontColor = 'text-red-400';
-      if (status === 'unknown') fontColor = 'text-blue-400';
+      if (status === 'unknown') fontColor = 'text-orange-400';
       return fontColor;
    };
 
@@ -59,21 +60,20 @@ const Characters: React.FC = (): JSX.Element => {
       if (!searchMatches.length && characterState && characterState.characters) {
          charactersToRender = characterState.characters.slice(0, characterCount);
       } else {
-         charactersToRender = searchMatches
+         charactersToRender = searchMatches;
       }
 
       return (
          charactersToRender &&
-         charactersToRender.map(({ id, name, status, species, type, image, location, episode }: ICharacter) => (
+         charactersToRender.map(({ id, name, status, species, type, image, location, episode, created, origin }: ICharacter) => (
             <div className='md:flex bg-white rounded shadow-xl p-5' key={id * Math.random()}>
                <div className='md:flex-shrink-0'>
-                  <img className='rounded-lg md:w-56' src={image} alt={`${name}'s avatar`} />
+                  <img className='rounded-lg md:w-56 shadow-md border-2 border-green-300' src={image} alt={`${name}'s avatar`} />
                </div>
                <div className='mt-4 md:mt-0 md:ml-6'>
                   <div className='uppercase tracking-wide text-lg text-indigo-600 font-bold'>{name}</div>
-                  <a href='#' className='block mt-1 leading-tight font-semibold text-gray-900 hover:underline'>
-                     {location.name}
-                  </a>
+                  <span className='text-indigo-400'>Last Known Location: </span>
+                  <a href='#' className='block mt-1 mb-2 leading-tight font-semibold text-blue-400 hover:underline'>{location.name}</a>
                   <ul className='list-reset mt-2 text-gray-600'>
                      {type && (
                         <li>
@@ -85,6 +85,12 @@ const Characters: React.FC = (): JSX.Element => {
                      </li>
                      <li>
                         <span className='font-bold'>Species:</span> {species}
+                     </li>
+                     <li>
+                        <span className='font-bold'>Created:</span> {formatTimeStamp(created)}
+                     </li>
+                     <li>
+                        <span className='font-bold'>Origin:</span> <a href="#" className='mt-1 mb-2 leading-tight font-semibold text-blue-400 hover:underline'>{origin.name}</a>
                      </li>
                      <li className='mt-20'>
                         <span className='font-thin text-sm'>Featured in {episode.length} episodes</span>
