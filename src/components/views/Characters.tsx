@@ -30,7 +30,7 @@ const Characters: React.FC = (): JSX.Element => {
    const fetchAllCharacters = async (): Promise<void> => {
       setLoading(true);
       const pages: string[] = [];
-      for (let i = 0; i <= 25; i++) {
+      for (let i = 1; i <= 25; i++) {
          pages.push(generateEpisodesUrl(CHARACTERS_URL, i));
       }
       const characters = await Promise.all(pages.map(page => fetch(page).then(res => res.json()).then(({ results }) => results)));
@@ -44,7 +44,7 @@ const Characters: React.FC = (): JSX.Element => {
 
    const handleScroll = () => {
       if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
-      !searchMatches.length && setCharacterCount((prevCount: number) => prevCount + 20);
+      !searchMatches.length && setCharacterCount((prevCount: number): number => prevCount + 20);
    };
 
    const determineStatus = (status: string): string => {
