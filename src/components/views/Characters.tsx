@@ -110,7 +110,7 @@ const Characters: React.FC = (): JSX.Element => {
             className={`${!open
                ? 'bg-orange-500 hover:bg-orange-600'
                : 'bg-red-600 hover:bg-red-700'} text-white mb-3 font-bold py-1 px-3 rounded`}
-            onClick={() => setOpen(!open)}>
+            onClick={() => {setOpen(!open); setSearch('')}}>
             {!open ? 'Refine Search' : 'Cancel'}
          </button>
          {open && (
