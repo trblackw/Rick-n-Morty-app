@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { IGeneralInfo } from '../../interfaces';
 import { GENERAL_INFO_URL } from '../../Store';
+import { RouteComponentProps } from 'react-router-dom';
 import Loading from '../elements/Loading';
 import Error from '../elements/Error';
 
-const Landing: React.FC = (): JSX.Element => {
+const Landing: React.FC<RouteComponentProps> = ({ history }): JSX.Element => {
    const [info, setInfo] = useState<IGeneralInfo | undefined>(undefined);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<{ message: string | null }>({ message: null });
@@ -46,7 +47,7 @@ const Landing: React.FC = (): JSX.Element => {
             <div className='p-8 w-full mx-auto bg-indigo-400 rounded-lg shadow-lg'>
                <div className='flex justify-center'>
                   <h2 className='text-white text-4xl text-center mr-3 font-normal align-middle'>"{randomQuote}"</h2>
-                  <div className="mt-3">
+                  <div className='mt-3'>
                      <button
                         onClick={fetchRandomQuote}
                         className='bg-orange-600 hover:bg-orange-700 text-white font-bold py-1 px-2 border border-orange-800 shadow rounded'>
@@ -54,7 +55,9 @@ const Landing: React.FC = (): JSX.Element => {
                      </button>
                   </div>
                </div>
-                  <p className='text-sm text-center text-indigo-900'>This app is pretty much pointless -- but I found every Rick and Morty API out there & but it to work</p>
+               <p className='text-sm text-center text-indigo-900'>
+                  This app is pretty much pointless -- but I found every Rick and Morty API out there & but it to work
+               </p>
                <div className='my-16 flex flex-wrap pl-32 justify-center md:items-center w-full'>
                   <div className='bg-transparent z-10'>
                      <div className='mx-auto w-full'>
@@ -78,15 +81,19 @@ const Landing: React.FC = (): JSX.Element => {
                         ))}
                      </div>
                      <div className='py-8'>
-                        <table className='w-3/4 mx-auto text-indigo-100 text-center border-collapse'>
+                        <table className='w-3/4 mx-auto text-indigo-100 text-center border-collapse cursor-pointer'>
                            <tbody>
                               <tr>
-                                 <td className='px-2 py-4 border border-indigo-600'>Account management</td>
-                                 <td className='px-2 py-4 border border-indigo-600'>Volume discounts</td>
+                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold' onClick={() => history.push('/episodes')}>
+                                    Episodes
+                                 </td>
+                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold' onClick={() => history.push('/characters')}>
+                                    Characters
+                                 </td>
                               </tr>
                               <tr>
-                                 <td className='px-2 py-4 border border-indigo-600'>Migration assistance</td>
-                                 <td className='px-2 py-4 border border-indigo-600'>Dedicated support</td>
+                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold'>Locations</td>
+                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold'>Dedicated support</td>
                               </tr>
                            </tbody>
                         </table>
