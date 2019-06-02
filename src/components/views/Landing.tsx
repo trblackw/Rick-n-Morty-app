@@ -56,7 +56,7 @@ const Landing: React.FC<RouteComponentProps> = ({ history }): JSX.Element => {
                   </div>
                </div>
                <p className='text-sm text-center text-indigo-900'>
-                  This app is pretty much pointless -- but I found every Rick and Morty API out there & but it to work
+                  This app is pretty much pointless -- but I found every Rick and Morty API out there & put it to work
                </p>
                <div className='my-16 flex flex-wrap pl-32 justify-center md:items-center w-full'>
                   <div className='bg-transparent z-10'>
@@ -72,7 +72,7 @@ const Landing: React.FC<RouteComponentProps> = ({ history }): JSX.Element => {
                      </div>
                   </div>
                   <div className='bg-indigo-700 rounded shadow w-5/6 md:w-1/2 z-0 mx-auto mt-1 md:-mt-0 md:-ml-1'>
-                     <div className='py-8 text-center text-indigo-100 font-semibold uppercase'>{info.name}</div>
+                     <div className='py-8 text-center text-indigo-100 font-semibold uppercase text-2xl'>{info.name}</div>
                      <div className='w-2/3 mx-auto flex justify-center'>
                         {info.genres.map((genre: string, i: number): JSX.Element => (
                            <span key={i} className='mx-2 text-white rounded shadow px-2 py-2 border border-indigo-800 bg-indigo-800'>
@@ -84,36 +84,29 @@ const Landing: React.FC<RouteComponentProps> = ({ history }): JSX.Element => {
                         <table className='w-3/4 mx-auto text-indigo-100 text-center border-collapse cursor-pointer'>
                            <tbody>
                               <tr>
-                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold' onClick={() => history.push('/episodes')}>
+                                 <td
+                                    className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold'
+                                    onClick={() => history.push('/episodes')}>
                                     Episodes
                                  </td>
-                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold' onClick={() => history.push('/characters')}>
+                                 <td
+                                    className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold'
+                                    onClick={() => history.push('/characters')}>
                                     Characters
                                  </td>
                               </tr>
                               <tr>
-                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold'>Locations</td>
-                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold'>Dedicated support</td>
+                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold'>
+                                    Locations
+                                 </td>
+                                 <td className='px-2 py-4 border border-indigo-600 w-1/2 hover:bg-indigo-800 cursor-pointer hover:font-bold' onMouseOver={() => console.log('heys')} >
+                                    Placeholder
+                                 </td>
                               </tr>
                            </tbody>
                         </table>
                      </div>
-                     <a href='#'>
-                        <div className='py-8 opacity-50 bg-indigo-800 hover:bg-indigo-600 text-indigo-300 rounded rounded-t-none text-center uppercase font-bold flex items-center justify-center'>
-                           <span>Contact sales</span>
-                           <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              viewBox='0 0 24 24'
-                              width='24'
-                              height='24'
-                              className='icon fill-current w-4 h-4 ml-2'>
-                              <path
-                                 d='M18.59 13H3a1 1 0 0 1 0-2h15.59l-5.3-5.3a1 1 0 1 1 1.42-1.4l7 7a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.42-1.4l5.3-5.3z'
-                                 className='heroicon-ui'
-                              />
-                           </svg>
-                        </div>
-                     </a>
+                        <div className='py-8 opacity-50 bg-indigo-700 text-indigo-300 rounded rounded-t-none text-center uppercase font-bold flex items-center justify-center' />
                   </div>
                </div>
             </div>
