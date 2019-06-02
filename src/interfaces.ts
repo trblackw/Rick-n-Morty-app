@@ -3,11 +3,38 @@ export interface IAppState {
    characterState: { characters: ICharacter[]; updateCharacters(character: ICharacter): void };
 }
 
+/**
+ * STATE MANAGEMENT
+ */
 export interface IAction {
    type: string;
    payload: any;
 }
 
+export type ReducerFunc = (state: ICharacterState | IEpisodeState | any, action: IAction) => any;
+
+/**
+ * GENERAL SHOW INFO
+ */
+
+ export interface IGeneralInfo {
+   genres: string[];
+   id: number;
+   image: { medium: string; original: string };
+   name: string;
+   network: { name: string; country: string };
+   officialSite: string;
+   premiered: string;
+   rating: { average: string };
+   runtime: number;
+   schedule: { days: string[]; time: string };
+   summary: string;
+   updated: number;
+ }
+
+/**
+ * EPISODES
+ */
 export type Info = {
    count: number;
    pages: number;
@@ -21,12 +48,6 @@ export interface IEpisodeState {
    info: Info | {};
    // updateEpisodes(episode: IEpisode): void;
 }
-
-export interface ICharacterState {
-   characters: ICharacter[];
-   info: Info | {};
-}
-
 export interface IEpisode {
    id: number;
    name: string;
@@ -37,10 +58,21 @@ export interface IEpisode {
    air_date: string;
 }
 
+
+/**
+ * CHARACTERS
+ */
+export interface ICharacterState {
+   characters: ICharacter[];
+   info: Info | {};
+}
+
+
 export interface ICharacter {
    episode: string[];
    gender: string;
    id: number;
+   created: string;
    image: string;
    location: { name: string; url: string };
    name: string;
@@ -51,12 +83,4 @@ export interface ICharacter {
    url: string;
 }
 
-export interface IInfo {
-   count: number;
-   next: string;
-   pages: number;
-   prev?: string;
-}
 
-
-export type ReducerFunc = (state: ICharacterState | IEpisodeState | any, action: IAction) => any;
