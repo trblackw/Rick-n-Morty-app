@@ -2,13 +2,14 @@ import React, { createContext, useReducer } from 'react';
 import { IEpisodeState, IAction, IEpisode, ReducerFunc, ICharacterState } from './interfaces';
 
 //EPISODES
-const EPISODES_URL: string = 'https://rickandmortyapi.com/api/episode/';
+export const EPISODES_URL: string = 'https://rickandmortyapi.com/api/episode/';
+export const GENERAL_INFO_URL: string = 'https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty';
 export const FETCH_EPISODES: string = 'FETCH_EPISODES';
 export const ADD_TO_FAVORITES: string = 'ADD_TO_FAVORITES';
 export const REMOVE_FROM_FAVORITES: string = 'REMOVE_FROM_FAVORITES';
 export const CLEAR_FAVORITES: string = 'CLEAR_FAVORITES';
 export const FETCH_SINGLE_EPISODE: string = 'FETCH_SINGLE_EPISODE';
-export const generateEpisodesUrl = (page: number = 1) => `${EPISODES_URL}?page=${page}`;
+export const generateEpisodesUrl = (url: string = EPISODES_URL, page: number = 1) => `${url}?page=${page}`;
 
 const episodeReducer: ReducerFunc = (state: IEpisodeState = initialEpisodeState, { type, payload }: IAction): IEpisodeState => {
    switch (type) {
@@ -53,7 +54,6 @@ const characterReducer: ReducerFunc = (state: ICharacterState = initialCharacter
 const combineReducers = (reducers: { [reducer: string]: ReducerFunc }): ((state: any, action: any) => { state: any }) => {
    return (state: any = {}, action: IAction) => {
       return Object.keys(reducers).reduce((nextState: any, key: any) => {
-         // eslint-disable-next-line no-param-reassign
          nextState[key] = reducers[key](state[key], action);
          return nextState;
       }, {});
@@ -67,18 +67,17 @@ const initialEpisodeState: IEpisodeState = {
 };
 
 const initialCharacterState: ICharacterState = {
-   characters: []
+   characters: [],
+   info: {}
 };
 export const Store = createContext<ICharacterState | IEpisodeState | any>({ ...initialEpisodeState, ...initialCharacterState });
 
 export const StoreProvider = ({ children }: any): JSX.Element => {
-   //state key is a required prop on initialState arg passed to useReducer
    const appReducers = combineReducers({
       episodeState: episodeReducer,
       characterState: characterReducer
    });
    const [state, dispatch] = useReducer<any>(appReducers, { ...initialEpisodeState, ...initialCharacterState });
-   console.log('TCL: state', state);
 
    return <Store.Provider value={{ state, dispatch }}>{children}</Store.Provider>;
 };
