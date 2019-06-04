@@ -6,10 +6,12 @@ import Search, { Filters } from '../elements/Search';
 import useToggle from '../../hooks/useToggle';
 import Loading from '../elements/Loading';
 import { formatTimeStamp } from '../../utils';
+import Error from '../elements/Error';
 
 const Characters: React.FC = (): JSX.Element => {
    const [loading, setLoading] = useState<boolean>(false);
    const [search, setSearch] = useState<string>('');
+   const [error, setError] = useState<{ message: string | null }>({ message: null });
    const [characterCount, setCharacterCount] = useState<number>(20);
    const [searchMatches, setSearchMatches] = useState<ICharacter[]>([]);
    const { state: { characterState }, dispatch } = useContext(Store);
@@ -33,9 +35,14 @@ const Characters: React.FC = (): JSX.Element => {
       for (let i = 1; i <= 25; i++) {
          pages.push(generateEpisodesUrl(CHARACTERS_URL, i));
       }
-      const characters = await Promise.all(pages.map(page => fetch(page).then(res => res.json()).then(({ results }) => results)));
-      dispatch({ type: FETCH_CHARACTERS, payload: characters.flat() });
-      setLoading(false);
+      try {
+         const characters = await Promise.all(pages.map(page => fetch(page).then(res => res.json()).then(({ results }) => results)));
+         dispatch({ type: FETCH_CHARACTERS, payload: characters.flat() });
+         setLoading(false);
+      } catch (error) {
+         console.error(error);
+         setError({ message: error.message });
+      }
    };
 
    useEffect(() => {
@@ -73,7 +80,9 @@ const Characters: React.FC = (): JSX.Element => {
                <div className='mt-4 md:mt-0 md:ml-6'>
                   <div className='uppercase tracking-wide text-lg text-indigo-600 font-bold'>{name}</div>
                   <span className='text-indigo-400'>Last Known Location: </span>
-                  <a href='#' className='block mt-1 mb-2 leading-tight font-semibold text-blue-400 hover:underline'>{location.name}</a>
+                  <a href='#' className='block mt-1 mb-2 leading-tight font-semibold text-blue-400 hover:underline'>
+                     {location.name}
+                  </a>
                   <ul className='list-reset mt-2 text-gray-600'>
                      {type && (
                         <li>
@@ -90,13 +99,17 @@ const Characters: React.FC = (): JSX.Element => {
                         <span className='font-bold'>Created:</span> {formatTimeStamp(created)}
                      </li>
                      <li>
-                        <span className='font-bold'>Origin:</span> <a href="#" className='mt-1 mb-2 leading-tight font-semibold text-blue-400 hover:underline'>{origin.name}</a>
+                        <span className='font-bold'>Origin:</span>{' '}
+                        <a href='#' className='mt-1 mb-2 leading-tight font-semibold text-blue-400 hover:underline'>
+                           {origin.name}
+                        </a>
                      </li>
                      <li className='mt-20'>
                         <span className='font-thin text-sm'>Featured in {episode.length} episodes</span>
                      </li>
                   </ul>
                </div>
+               {error.message && <Error errorMessage={error.message} />}
             </div>
          ))
       );
@@ -110,7 +123,10 @@ const Characters: React.FC = (): JSX.Element => {
             className={`${!open
                ? 'bg-orange-500 hover:bg-orange-600'
                : 'bg-red-600 hover:bg-red-700'} text-white mb-3 font-bold py-1 px-3 rounded`}
-            onClick={() => {setOpen(!open); setSearch('')}}>
+            onClick={() => {
+               setOpen(!open);
+               setSearch('');
+            }}>
             {!open ? 'Refine Search' : 'Cancel'}
          </button>
          {open && (
