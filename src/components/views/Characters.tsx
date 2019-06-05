@@ -29,6 +29,10 @@ const Characters: React.FC = (): JSX.Element => {
       fetchAllCharacters();
    }, []);
 
+   useEffect(() => {
+      console.log(search)
+   }, [search])
+
    const fetchAllCharacters = async (): Promise<void> => {
       setLoading(true);
       const pages: string[] = [];
@@ -62,11 +66,11 @@ const Characters: React.FC = (): JSX.Element => {
       return fontColor;
    };
 
-   const renderCharacters = (): JSX.Element | undefined => {
+   const renderCharacters = (query: string): JSX.Element | undefined => {
       let charactersToRender;
-      if (!searchMatches.length && characterState && characterState.characters) {
+      if (!query.length && characterState && characterState.characters) {
          charactersToRender = characterState.characters.slice(0, characterCount);
-      } else {
+      } else if (searchMatches.length) {
          charactersToRender = searchMatches;
       }
 
@@ -142,7 +146,7 @@ const Characters: React.FC = (): JSX.Element => {
             />
          )}
          <Grid minColumnWidth={500} gridGap={30}>
-            {renderCharacters()}
+            {renderCharacters(search)}
          </Grid>
       </div>
    );
