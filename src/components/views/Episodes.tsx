@@ -35,7 +35,6 @@ const Episodes: React.FC = (): JSX.Element => {
          setLoading(true);
          const res = await fetch(generateEpisodesUrl(EPISODES_URL, page));
          const { info, results: episodes } = await res.json();
-         console.log('TCL: episodes', episodes);
          dispatch({ type: FETCH_EPISODES, payload: { episodes, info } });
          setLoading(false);
       } catch (error) {

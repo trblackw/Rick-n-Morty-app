@@ -29,10 +29,6 @@ const Characters: React.FC = (): JSX.Element => {
       fetchAllCharacters();
    }, []);
 
-   useEffect(() => {
-      console.log(search)
-   }, [search])
-
    const fetchAllCharacters = async (): Promise<void> => {
       setLoading(true);
       const pages: string[] = [];
