@@ -10,6 +10,9 @@ const Favorites = lazy<React.FC<{}>>((): Promise<{
 const Characters = lazy<React.FC<{}>>((): Promise<{
    default: React.FC<{}>;
 }> => import('./components/views/Characters'));
+const Locations = lazy<React.FC<{}>>((): Promise<{
+   default: React.FC<{}>;
+}> => import('./components/views/Locations'));
 
 const App = () => (
    <Fragment>
@@ -21,6 +24,7 @@ const App = () => (
                <Route path='/episode/:id' component={Episode} />
                <Route path='/favorites' component={Favorites} />
                <Route path='/characters' component={Characters} />
+               <Route path='/locations' component={Locations} />
             </Suspense>
          </Switch>
       </Router>
