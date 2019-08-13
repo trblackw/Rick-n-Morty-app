@@ -94,7 +94,7 @@ const Episodes: React.FC = (): JSX.Element => {
    return loading || !episodeState ? (
       <Loading />
    ) : (
-      <div className='p-3 m-auto bg-indigo-500 text-gray-100'>
+      <div className='p-3 m-auto bg-indigo-500 text-gray-100 min-h-screen'>
          <div className='flex justify-between'>
             {episodeState && episodeState.info && <Pagination pages={episodeState.info.pages} setPage={setPage} visible={search === ''} />}
             <div className='align-middle'>
