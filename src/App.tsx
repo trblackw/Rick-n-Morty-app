@@ -20,10 +20,10 @@ const App = () => (
          <Nav />
          <Switch>
             <Suspense fallback={<Loading />}>
-               <Route exact path='/' component={Episodes} />
+               <Route exact path='/' component={Characters} />
                <Route path='/episode/:id' component={Episode} />
                <Route path='/favorites' component={Favorites} />
-               <Route path='/characters' component={Characters} />
+               {/* <Route path='/characters' component={Characters} /> */}
                <Route path='/locations' component={Locations} />
             </Suspense>
          </Switch>

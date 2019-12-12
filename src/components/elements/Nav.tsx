@@ -36,10 +36,10 @@ const Nav: React.FC = (): JSX.Element => {
             </div> */}
             <div>
                <NavLink
-                  to='/characters'
+                  to='/#'
                   className={NavLinkStyles}
                   activeClassName='inline-block text-lg px-4 mx-2 py-2 leading-none border rounded text-white border-white hover:border-transparent text-white bg-green-400 mt-4 lg:mt-0'>
-                  Character List
+                  Episode List
                </NavLink>
             </div>
          </div>
